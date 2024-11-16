@@ -5,7 +5,9 @@ import 'package:cinemapedia/presentation/provider/movies/movies_repository_provi
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 //esta variable lo que hára es proveer de las peliculas actuales en el cine
 final nowPlayingMoviesProvider = StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
+  
   final fetchMoreMovies = ref.watch( movieRepositoryProvider ).getNowPlaying;
+  
   return MoviesNotifier(
     fetchMoreMovies: fetchMoreMovies
    );
