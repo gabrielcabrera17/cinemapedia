@@ -1,4 +1,4 @@
-import 'package:cinemapedia/presentation/provider/movies/movies_providers.dart';
+import 'package:cinemapedia/presentation/provider/providers.dart';
 import 'package:cinemapedia/presentation/widget/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,14 +36,14 @@ class _HomeViewState extends ConsumerState<_HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final nowPlayingMovies = ref.watch( nowPlayingMoviesProvider);
-  
+    //final nowPlayingMovies = ref.watch( nowPlayingMoviesProvider);
+    final slideShowMovies = ref.watch( moviesSlidesShowProvider);
     return Column(
       children: [
-        
+
         const CustomAppbar(),
 
-        MoviesSlidesShow(movies: nowPlayingMovies)
+        MoviesSlidesShow(movies: slideShowMovies)
 
       ],
     );
