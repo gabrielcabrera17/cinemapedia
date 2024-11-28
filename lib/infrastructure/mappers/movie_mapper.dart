@@ -19,7 +19,7 @@ static Movie movieDbToEntity( MovieMovieDB moviedb ) => Movie(
   overview: moviedb.overview, 
   popularity: moviedb.popularity, 
   posterPath: (moviedb.posterPath != '')? 
-    'https://image.tmdb.org/t/p/w500{ moviedb.backdropPath  }'
+    'https://image.tmdb.org/t/p/w500${moviedb.backdropPath}'
     :'no-poster', 
   releaseDate: moviedb.releaseDate, 
   title: moviedb.title, 
