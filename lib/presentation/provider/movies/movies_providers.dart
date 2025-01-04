@@ -23,6 +23,24 @@ final popularMovieProvider = StateNotifierProvider<MoviesNotifier, List<Movie>>(
    );
 },);
 
+final topRatedMoviesProvider = StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
+  
+  final fetchMoreMovies = ref.watch( movieRepositoryProvider ).getTopRated;
+  
+  return MoviesNotifier(
+    fetchMoreMovies: fetchMoreMovies
+   );
+},);
+
+final upcomingMoviesProvider = StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
+  
+  final fetchMoreMovies = ref.watch( movieRepositoryProvider ).getUpcoming;
+  
+  return MoviesNotifier(
+    fetchMoreMovies: fetchMoreMovies
+   );
+},);
+
 typedef MovieCallback = Future<List<Movie>> Function({ int page });
 
 //State_Notifier_Provider: es un proovedor de información que notifica cuando cambia el estado 

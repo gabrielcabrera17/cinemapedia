@@ -32,6 +32,8 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     //si hago el .notifier no quiero el valor, no quiero el estado quiero el notifier
     ref.read( nowPlayingMoviesProvider.notifier ).loadNextPage();
     ref.read( popularMovieProvider.notifier ).loadNextPage();
+    ref.read( topRatedMoviesProvider.notifier ).loadNextPage();
+    ref.read( upcomingMoviesProvider.notifier ).loadNextPage();
   }
 
   @override
@@ -39,6 +41,8 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     final nowPlayingMovies = ref.watch( nowPlayingMoviesProvider);
     final slideShowMovies = ref.watch( moviesSlidesShowProvider);
     final popularMovies = ref.watch( popularMovieProvider);
+    final topRatedMovies = ref.watch( topRatedMoviesProvider);
+    final upcomingMovies = ref.watch( upcomingMoviesProvider);
 
     return CustomScrollView(
       //slivers es un widget que trabaja directamente con el scrollview
@@ -72,11 +76,11 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                 ),
             
                 MovieHorizontalListView(
-                  movies: nowPlayingMovies,
+                  movies: upcomingMovies,
                   title: 'Proximamente',
                   subTitle: 'En este mes',
                   loadNextPage: () {
-                    ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                    ref.read(upcomingMoviesProvider.notifier).loadNextPage();
                   }
                 ),
             
@@ -90,11 +94,11 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                 ),
             
                 MovieHorizontalListView(
-                  movies: nowPlayingMovies,
+                  movies: topRatedMovies,
                   title: 'Mejor calificadas',
                   subTitle: 'Desde siempres',
                   loadNextPage: () {
-                    ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                    ref.read(topRatedMoviesProvider.notifier).loadNextPage();
                   }
                 ),
 

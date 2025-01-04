@@ -7,5 +7,11 @@ abstract class MoviesDatasource {
 //populares
   Future<List<Movie>> getPopular({ int page = 1});
 
+//upComing
+Future<List<Movie>> getUpcoming({ int page = 1});
+
+//top raider
+Future<List<Movie>> getTopRated({ int page = 1});
+
 
 }
