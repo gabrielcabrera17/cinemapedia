@@ -44,6 +44,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     final topRatedMovies = ref.watch( topRatedMoviesProvider);
     final upcomingMovies = ref.watch( upcomingMoviesProvider);
 
+    return const FullScreenLoader();
     return CustomScrollView(
       //slivers es un widget que trabaja directamente con el scrollview
       slivers: [
