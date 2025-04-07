@@ -29,7 +29,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   @override
   void initState() {
     super.initState();
-    //si hago el .notifier no quiero el valor, no quiero el estado quiero el notifier
+    //si hago3 el .notifier no quiero el valor, no quiero el estado quiero el notifier
     ref.read( nowPlayingMoviesProvider.notifier ).loadNextPage();
     ref.read( popularMovieProvider.notifier ).loadNextPage();
     ref.read( topRatedMoviesProvider.notifier ).loadNextPage();
@@ -38,13 +38,16 @@ class _HomeViewState extends ConsumerState<_HomeView> {
 
   @override
   Widget build(BuildContext context) {
+
+    final initialLoading = ref.watch(initialLoadingProvider);
+    if(initialLoading) return const FullScreenLoader();
+
     final nowPlayingMovies = ref.watch( nowPlayingMoviesProvider);
     final slideShowMovies = ref.watch( moviesSlidesShowProvider);
     final popularMovies = ref.watch( popularMovieProvider);
     final topRatedMovies = ref.watch( topRatedMoviesProvider);
     final upcomingMovies = ref.watch( upcomingMoviesProvider);
 
-    return const FullScreenLoader();
     return CustomScrollView(
       //slivers es un widget que trabaja directamente con el scrollview
       slivers: [
