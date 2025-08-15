@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia/domain/entities/movie.dart';
 import 'package:cinemapedia/presentation/provider/movies/movie_infor_provider.dart';
 import 'package:cinemapedia/presentation/provider/providers.dart';
@@ -139,6 +140,10 @@ class _CustomSliverAppBar extends StatelessWidget {
               child: Image.network(
                 movie.posterPath,
                 fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if(loadingProgress != null) return SizedBox();
+                  return FadeIn(child: child);
+                },
               ),
             ),
             const SizedBox.expand(
@@ -207,13 +212,15 @@ class _ActosByMovie extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //Actor Photo
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(28),
-                  child: Image.network(
-                    actor.profilePath,
-                    height: 180,
-                    width: 135,
-                    fit: BoxFit.cover,
+                FadeInRight(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(28),
+                    child: Image.network(
+                      actor.profilePath,
+                      height: 180,
+                      width: 135,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 5,),
