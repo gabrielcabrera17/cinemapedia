@@ -35,6 +35,7 @@ class ActorsByMovieNotifier extends StateNotifier<Map<String,List<Actor>>>{
         if(state[movieId] != null) return;
         
         final List<Actor> actors = await getActors(movieId);
+      
         //clonamos el estado anterior y añadimos la movieId
         state = { ...state, movieId: actors};
     }
