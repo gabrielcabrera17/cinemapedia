@@ -17,4 +17,7 @@ abstract class MoviesDatasource {
   //obtener una pelicula
   Future<Movie> getMovieById(String id);
 
+  //buscador de pelicula
+  Future<List<Movie>> searchMovies(String query);
+
 }
