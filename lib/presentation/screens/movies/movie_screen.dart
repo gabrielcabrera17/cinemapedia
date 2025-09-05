@@ -42,12 +42,8 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
         physics: const ClampingScrollPhysics(),
         slivers: [
           _CustomSliverAppBar(movie: movie,),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                _MovieDetails(movie: movie),
-              ],
-            ),
+           SliverToBoxAdapter(
+            child: _MovieDetails(movie: movie),
           ),
         ],
       ),
@@ -126,11 +122,12 @@ class _CustomSliverAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final size = MediaQuery.of(context).size;
-
+    
     return SliverAppBar(
       backgroundColor: Colors.black,
-      expandedHeight: size.height * 0.7,
+      expandedHeight: size.height * 0.5,
       foregroundColor: Colors.white,
+      pinned: true,
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         //title: Text(movie.title, 
