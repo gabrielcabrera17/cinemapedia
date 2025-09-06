@@ -22,7 +22,7 @@ static Movie movieDbToEntity( MovieMovieDB moviedb ) => Movie(
   posterPath: (moviedb.posterPath != '')? 
     'https://image.tmdb.org/t/p/w500${moviedb.backdropPath}'
     :'no-poster', 
-  releaseDate: moviedb.releaseDate, 
+  releaseDate: moviedb.releaseDate != null ? moviedb.releaseDate! : DateTime.now(), 
   title: moviedb.title, 
   video: moviedb.video, 
   voteAverage: moviedb.voteAverage, 
