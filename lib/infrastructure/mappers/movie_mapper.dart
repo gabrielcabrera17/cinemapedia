@@ -21,7 +21,7 @@ static Movie movieDbToEntity( MovieMovieDB moviedb ) => Movie(
   popularity: moviedb.popularity, 
   posterPath: (moviedb.posterPath != '')? 
     'https://image.tmdb.org/t/p/w500${moviedb.posterPath}'
-    :'no-poster', 
+    :'https://www.lobov.com.py/imagenes/img-no-disponible.jpg', 
   releaseDate: moviedb.releaseDate != null ? moviedb.releaseDate! : DateTime.now(), 
   title: moviedb.title, 
   video: moviedb.video, 
@@ -42,7 +42,7 @@ static Movie movieDbToEntity( MovieMovieDB moviedb ) => Movie(
   popularity: moviedb.popularity, 
   posterPath: (moviedb.posterPath != '')? 
     'https://image.tmdb.org/t/p/w500${moviedb.posterPath}'
-    :'no-poster', 
+    :'https://www.lobov.com.py/imagenes/img-no-disponible.jpg', 
   releaseDate: moviedb.releaseDate, 
   title: moviedb.title, 
   video: moviedb.video, 
