@@ -21,7 +21,9 @@ SearchMovieDelegate({
     required this.searchMovies
 });
 
-
+void clearStreams(){
+  debounceMovies.close();
+}
 void _onQueryChange(String query){
 
   print('Query string cambió');
@@ -29,8 +31,16 @@ void _onQueryChange(String query){
   if(_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
 
   //Espero 500 milesimas de segundos para emitir el valor
-  _debounceTimer = Timer(const Duration(milliseconds: 500), () {
+  _debounceTimer = Timer(const Duration(milliseconds: 500), () async {
     print('Buscando Peliculas');
+
+    if(query.isEmpty){
+      debounceMovies.add([]);
+      return;
+    }
+
+    final movies = await searchMovies(query);
+    debounceMovies.add(movies);
   },);
 }
 
@@ -57,7 +67,13 @@ void _onQueryChange(String query){
   @override
   Widget? buildLeading(BuildContext context) {
     return IconButton(
-      onPressed: () => close(context, null), icon: const Icon(Icons.arrow_back_ios_new_rounded));
+      onPressed: () {
+      clearStreams();
+      close(context, null);
+      },
+      icon: const Icon(Icons.arrow_back_ios_new_rounded)
+
+    );
   }
 
   @override
@@ -82,7 +98,10 @@ void _onQueryChange(String query){
           itemCount: movies.length,
           itemBuilder: (context, index) => _MovieItem(
             movie: movies[index],
-            onMovieSelected: close,
+            onMovieSelected: (context, movie){
+              clearStreams();
+              close(context, movie);
+            },
           )
         );
       },
