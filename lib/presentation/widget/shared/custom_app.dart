@@ -32,7 +32,7 @@ class CustomAppbar extends ConsumerWidget {
                 onPressed: ()  {
                   //delegate es el encargado de trabajar la busqueda
                   
-                  final movieRepository = ref.read(movieRepositoryProvider);
+                  //final searchMovies = ref.read(searchMoviesProvider);
                   final searchQuery = ref.read(searchQueryProvider);
 
                   showSearch<Movie?>(
@@ -40,10 +40,7 @@ class CustomAppbar extends ConsumerWidget {
                     context: context, 
                     delegate: SearchMovieDelegate(
                       //mando la referencia a mi función searchMovies
-                      searchMovies: (query) {
-                        ref.read(searchQueryProvider.notifier).update((state) => query,);
-                        return movieRepository.searchMovies(query);
-                      },
+                      searchMovies: ref.read(searchMoviesProvider.notifier).searchMovieByQuery
                     )
                   ).then((movie) {
                     
