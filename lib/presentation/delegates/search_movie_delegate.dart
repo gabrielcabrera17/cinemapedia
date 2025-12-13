@@ -13,6 +13,7 @@ class SearchMovieDelegate extends SearchDelegate<Movie?>{
    List<Movie> initialMovies;
   //Nos ayudará a controlar la realización de peticiones
   StreamController<List<Movie>> debounceMovies = StreamController.broadcast();
+  StreamController<bool> isLoadingStream = StreamController.broadcast();
   Timer? _debounceTimer;
 
 
@@ -30,7 +31,7 @@ void clearStreams(){
 void _onQueryChange(String query){
 
   print('Query string cambió');
-
+  isLoadingStream.add(true);
   if(_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
 
   //Espero 500 milesimas de segundos para emitir el valor
@@ -45,6 +46,7 @@ void _onQueryChange(String query){
     final movies = await searchMovies(query);
     debounceMovies.add(movies);
     initialMovies = movies;
+    isLoadingStream.add(false);
   },);
 }
 
@@ -53,19 +55,65 @@ void _onQueryChange(String query){
   //build para construir acciones, iconos, etc.
   @override
   List<Widget>? buildActions(BuildContext context) {
+    
     return [
 
       //al presionar el botón se le asigna al query un string vacio
-      FadeIn(
+    
+      StreamBuilder(
+        initialData: false,
+        stream: isLoadingStream.stream, 
+        builder: (context, snapshot) {
+        if(snapshot.data == true) {
+          return SpinPerfect(
+          duration: const Duration(seconds: 20),
+          spins: 10,
+          infinite: true,
+          //utilizamos animatedo de fer herrera para hacer desparecer
+          // el botón de clear con más estilo
+          animate: query.isNotEmpty,
+          child: IconButton(onPressed: () => query = '', 
+          icon: const Icon(Icons.refresh_rounded)
+          ),
+      );} 
+      return FadeIn(
         //utilizamos animatedo de fer herrera para hacer desparecer
         // el botón de clear con más estilo
         animate: query.isNotEmpty,
         child: IconButton(onPressed: () => query = '', 
         icon: const Icon(Icons.clear)
         ),
-      )
+      );
+        },
+      ),
+     
+
+      
+
 
     ];
+  }
+
+  Widget buildResultsAndSuggestions(){
+     
+    return StreamBuilder(
+      initialData: initialMovies,
+      stream: debounceMovies.stream, 
+      builder: (context, snapshot) {
+        final movies = snapshot.data ?? [];
+
+        return ListView.builder(
+          itemCount: movies.length,
+          itemBuilder: (context, index) => _MovieItem(
+            movie: movies[index],
+            onMovieSelected: (context, movie){
+              clearStreams();
+              close(context, movie);
+            },
+          )
+        );
+      },
+    );
   }
 
   @override
@@ -82,25 +130,7 @@ void _onQueryChange(String query){
 
   @override
   Widget buildResults(BuildContext context) {
-    
-    return StreamBuilder(
-      initialData: initialMovies,
-      stream: debounceMovies.stream, 
-      builder: (context, snapshot) {
-        final movies = snapshot.data ?? [];
-
-        return ListView.builder(
-          itemCount: movies.length,
-          itemBuilder: (context, index) => _MovieItem(
-            movie: movies[index],
-            onMovieSelected: (context, movie){
-              clearStreams();
-              close(context, movie);
-            },
-          )
-        );
-      },
-    );
+    return buildResultsAndSuggestions();
   }
 
   @override
@@ -108,27 +138,7 @@ void _onQueryChange(String query){
 
     _onQueryChange(query);
 
-    return StreamBuilder(
-      initialData: initialMovies,
-      stream: debounceMovies.stream, 
-      builder: (context, snapshot) {
-
-       // TODO print('Realizando petición');
-        
-        final movies = snapshot.data ?? [];
-
-        return ListView.builder(
-          itemCount: movies.length,
-          itemBuilder: (context, index) => _MovieItem(
-            movie: movies[index],
-            onMovieSelected: (context, movie){
-              clearStreams();
-              close(context, movie);
-            },
-          )
-        );
-      },
-    );
+    return buildResultsAndSuggestions();
   }
 
 
