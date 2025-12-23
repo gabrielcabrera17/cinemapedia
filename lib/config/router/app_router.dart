@@ -9,6 +9,7 @@ final appRouter = GoRouter(
       name: HomeScreen.name,
       builder: (context, state) {
         final pageIndex = state.pathParameters['page'] ?? '0';
+        print('page index $pageIndex');
         return  HomeScreen(pageIndex: int.parse(pageIndex),);
       },
       //rutas hijas
