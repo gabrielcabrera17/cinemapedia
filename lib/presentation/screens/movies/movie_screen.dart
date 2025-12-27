@@ -128,6 +128,16 @@ class _CustomSliverAppBar extends StatelessWidget {
       expandedHeight: size.height * 0.5,
       foregroundColor: Colors.white,
       pinned: true,
+
+      actions: [
+        IconButton(
+          onPressed:() {
+          //TODO: implementar
+          },
+          //icon: const Icon(Icons.favorite_border_outlined),
+          icon: const Icon(Icons.favorite, color: Colors.red,),
+        )
+      ],
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         //title: Text(movie.title, 
@@ -172,7 +182,23 @@ class _CustomSliverAppBar extends StatelessWidget {
                   ])
                 )
               ),
-            )
+            ),
+
+            //Sombra de botón Favorito
+            const SizedBox.expand(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    stops: [0.0, 0.3],
+                    colors: [
+                    Colors.black87,
+                    Colors.transparent
+                  ])
+                )
+              ),
+            ),
           ],
         ),
       ),
@@ -232,5 +258,16 @@ class _ActosByMovie extends ConsumerWidget {
         },
       ),
     );
+  }
+}
+
+class _CustomGradient extends StatelessWidget {
+  //begin
+  //colores,etc
+  const _CustomGradient({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
