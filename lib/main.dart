@@ -18,10 +18,10 @@ Future <void> main() async {
   //     title: 'Mi primera pelicula'
   //   )
   // );
-  final deleteQuery = db.delete(db.favoriteMovies);
-  await deleteQuery.go();
-  final moviesQuery = await db.select(db.favoriteMovies).get();
-  print('movies: $moviesQuery');
+  // final deleteQuery = db.delete(db.favoriteMovies);
+  // await deleteQuery.go();
+  // final moviesQuery = await db.select(db.favoriteMovies).get();
+  // print('movies: $moviesQuery');
   //utilizarlo de manera global
   await dotenv.load(fileName: ".env");
 
