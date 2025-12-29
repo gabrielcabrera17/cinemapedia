@@ -3,6 +3,7 @@ import 'package:cinemapedia/domain/entities/movie.dart';
 import 'package:cinemapedia/presentation/provider/movies/movie_infor_provider.dart';
 import 'package:cinemapedia/presentation/provider/providers.dart';
 import 'package:cinemapedia/presentation/provider/storage/favorite_movies_provider.dart';
+import 'package:cinemapedia/presentation/provider/storage/is_favorite_movie_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -123,7 +124,7 @@ class _CustomSliverAppBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     final size = MediaQuery.of(context).size;
-    
+    final isFavoriteFuture = ref.watch(isFavoriteMovieProvider(movie.id));
     return SliverAppBar(
       backgroundColor: Colors.black,
       expandedHeight: size.height * 0.5,
@@ -133,11 +134,24 @@ class _CustomSliverAppBar extends ConsumerWidget {
       actions: [
         IconButton(
           onPressed:() async {
-            ref.read(favoriteMoviesProvider.notifier)
-              .toggleFavoriteMovie(movie);
+              await ref                
+
+            .read(favoriteMoviesProvider.notifier)
+
+            .toggleFavoriteMovie(movie);
+
+
+
+          ref.invalidate(isFavoriteMovieProvider(movie.id));
           },
           //icon: const Icon(Icons.favorite_border_outlined),
-          icon: const Icon(Icons.favorite, color: Colors.red,),
+          icon: isFavoriteFuture.when(
+            data: (isFavorite) => isFavorite 
+            ? const Icon(Icons.favorite_border_outlined, color: Colors.red,)
+            : const Icon(Icons.favorite_border_outlined),
+            error: (_, __) => throw Exception('Error al cargar el estado de favoritos'),
+            loading: () => const CircularProgressIndicator(strokeWidth: 2,),
+          ),
         )
       ],
       flexibleSpace: FlexibleSpaceBar(
