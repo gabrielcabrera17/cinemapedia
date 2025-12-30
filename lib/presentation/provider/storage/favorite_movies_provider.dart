@@ -12,7 +12,9 @@ import 'package:cinemapedia/domain/repository/local_storage_repository.dart';
 import 'package:cinemapedia/presentation/provider/storage/local_storage_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final favoriteMoviesProvider = StateNotifierProvider((ref) {
+final favoriteMoviesProvider = 
+StateNotifierProvider<StorageMoviesNotifier,Map<int,Movie>>
+((ref) {
   //Debemos retornar la instancia de un StateNotifierProvider
   final localStorageRepository = ref.watch(localStorageRepositoryProvider);
 
@@ -27,6 +29,24 @@ class StorageMoviesNotifier extends StateNotifier<Map<int, Movie>>{
 
   StorageMoviesNotifier({ required this.localStorageRepository}): super({});
 
+
+  Future<List<Movie>> loadNextPage() async{
+    final movies = await localStorageRepository.loadFavoriteMovies(limit: 10, offset: page*10);
+    
+    page++;
+
+    final tempMovies = <int, Movie>{};
+    //colocamos la pelicula en el state
+    for(final movie in movies){
+      //Grabo el state, en una lista temporal
+      //state = {...state, movie.id: movie};
+      tempMovies[movie.id] = movie;
+    }
+
+    state = { ...state, ...tempMovies};
+    
+    return movies;
+  }
 
   Future<void> toggleFavoriteMovie (Movie movie) async{
     //Consultamos si esta en favorito
